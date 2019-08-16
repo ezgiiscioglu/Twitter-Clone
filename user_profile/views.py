@@ -18,17 +18,17 @@ def login_form(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, "Giris isleminiz basarili")
+                messages.success(request, "Login successful")
             else:
-                error = f"{username} kullanici adi veya sifre dogrulanamadi"
+                error = f"{username} Username or password not vertified"
                 messages.warning(request, error)
         else:
             messages.warning(
                 request, 
-                "Lutfen kullanici adi ve sifre giriniz"
+                "Please fill username and password"
             )
     else:
-        messages.info(request, 'naaptini anlamadim :(')
+        messages.info(request, 'Error')
             
     return redirect('/')
 
@@ -36,7 +36,7 @@ def login_form(request):
 
 def logout_view(request):
     logout(request)
-    messages.info(request, 'Cikis Yaptiniz')
+    messages.info(request, 'Logout successful')
     return redirect('/')
 
 
@@ -49,13 +49,13 @@ def signup(request):
         password2 = request.POST.get('password2')
         error = False
         if password1 != password2:
-            messages.warning(request, "Sifreniz yanlis")
+            messages.warning(request, "Password is wrong")
             error = True
         if User.objects.filter(email=email).count():
-            messages.warning(request, "E-mail adresiniz mevcut")
+            messages.warning(request, "Email adress is already exists")
             error = True
         if User.objects.filter(username=username).count():
-            messages.warning(request, "Kullanici Adi mevcut")
+            messages.warning(request, "Username is already exists")
             error = True
         
         if error:
